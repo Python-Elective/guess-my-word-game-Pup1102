@@ -50,6 +50,13 @@ def is_word_guessed(secret_word, letters_guessed):
       False otherwise
     '''
     # FILL IN YOUR CODE HERE...
+    for letter in secret_word:
+      if letter not in letters_guessed:
+        return False
+    
+    return True
+
+
     pass
 
 
@@ -58,8 +65,9 @@ def is_word_guessed(secret_word, letters_guessed):
 # print(is_word_guessed('durian', ['h', 'a', 'c', 'd', 'i', 'm', 'n', 'r', 't', 'u']))
 # print(is_word_guessed('pineapple', []))
 
-
-
+print('')
+print("-----")
+print('')
 def get_guessed_word(secret_word, letters_guessed):
     '''
     secret_word: string, the word the user is guessing
@@ -68,7 +76,14 @@ def get_guessed_word(secret_word, letters_guessed):
       what letters in secret_word have been guessed so far.
     '''
     # FILL IN YOUR CODE HERE...
-    pass
+    result = ''
+    for letter in secret_word:
+      if letter in letters_guessed:
+        result += letter
+      else:
+          result += ' _ '
+    return result
+    
     
     
     
@@ -84,12 +99,18 @@ def get_available_letters(letters_guessed):
       yet been guessed.
     '''
     # FILL IN YOUR CODE HERE...   
-    pass
+    available_letter = string.ascii_lowercase
+    for character in letters_guessed:
+       if character in available_letter:
+          available_letter = available_letter.replace(character, '')
+    return available_letter
+    
 
 
 
 #Testcases 
 # print( get_available_letters(['e', 'i', 'k', 'p', 'r', 's']) )
+# print(get_available_letters(['p', 'r', 'f', 'd', 'k', 'h', 'c', 'a', 'i', 'y', 'w', 'b']))
   
 def game_loop(secret_word):
     '''
@@ -111,8 +132,48 @@ def game_loop(secret_word):
 
     Follows the other limitations detailed in the problem write-up.
     '''
+    number_of_guess = 8
     # FILL IN YOUR CODE HERE...
-    pass
+    letter_guess = ['']
+    print ('Let the game begin!')
+    print ('I thinking of a ' + str(len(secret_word)) + ' letters word.')
+    print ('You have ' + str(number_of_guess) + ' guess remaining')
+    end_game = False
+    while end_game == False:
+      if number_of_guess > 0:
+        character = input('Enter a Letter: ').lower()
+        if character in letter_guess:
+          print()
+          print("Fool, you already use this letter!")
+          print( get_guessed_word(secret_word, letter_guess))
+          
+        elif character in secret_word:
+          letter_guess.append(character)
+          print('')
+          print('Correct: ' + get_guessed_word(secret_word, letter_guess))
+          
+        elif character not in secret_word:
+          letter_guess.append(character)
+          print('')
+          number_of_guess -= 1
+          print('Incorrect: ' + get_guessed_word(secret_word, letter_guess))
+
+        print('Available Letters: ' + get_available_letters(letter_guess))
+        print ('You have ' + str(number_of_guess) + ' guesses remaining')
+
+
+        if (is_word_guessed(secret_word, letter_guess)) == True:
+            print("")
+            print('!Congratulation you win!')
+            end_game = True
+        elif number_of_guess == 0:
+          end_game = True
+          print('------')
+          print('Game over. The word was "' + secret_word + '"')
+    
+
+    
+
 
 
 
